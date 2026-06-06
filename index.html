@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Barcode Scanner</title>
+
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+</head>
+
+<body>
+
+<h2>Barcode Scanner</h2>
+
+<video id="video" width="300"></video>
+
+<p id="result"></p>
+
+<script>
+
+const codeReader =
+new ZXing.BrowserMultiFormatReader();
+
+codeReader.decodeFromVideoDevice(
+null,
+'video',
+(result, err) => {
+
+    if(result){
+
+        document.getElementById("result")
+        .innerText = result.text;
+
+        fetch(
+        "https://script.google.com/macros/s/AKfycbyA16TMfA4z_FkG1BbMLd1JDIbWTxV8LarK_9kkbQqwvsTZBiZxF_P2yQdPRcO9qIR2/exec",
+        {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                barcode:result.text
+            })
+        });
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
